@@ -5,10 +5,10 @@ import org.mule.api.annotations.Config;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.ReconnectOn;
+import org.mule.api.annotations.param.Optional;
 
 import com.df.transmission.config.ConnectorConfig;
 import com.df.transmission.data.Fields;
-import com.df.transmission.data.Response;
 import com.df.transmission.data.ResponseGetSession;
 import com.df.transmission.data.ResponseGetTorrents;
 import com.df.transmission.restjerseyconnector.exceptions.TorrentException;
@@ -40,8 +40,14 @@ public class TransmissionConnector {
 
     @Processor
     @ReconnectOn(exceptions = {TorrentException.class})
-    public ResponseGetTorrents getTorrents(Fields arguments,String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+    public ResponseGetTorrents getTorrents(Fields arguments,@Optional String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
         return config.getClient().getTorrents(arguments,ids);
+    }
+    
+    @Processor
+    @ReconnectOn(exceptions = {TorrentException.class})
+    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+        return config.getClient().stopTorrents(ids);
     }
     
     public ConnectorConfig getConfig() {

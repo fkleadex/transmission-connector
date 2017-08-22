@@ -1,11 +1,7 @@
 package com.df.transmission.data;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -65,6 +61,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "seedIdleMode",
     "seedRatioLimit",
     "status",
+    "startDate",
     "torrentFile",
     "totalSize",
     "trackerStats",
@@ -80,9 +77,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Torrent {
 
     @JsonProperty("activityDate")
-    private Integer activityDate;
+    private Date activityDate;
     @JsonProperty("addedDate")
-    private Integer addedDate;
+    private Date addedDate;
     @JsonProperty("bandwidthPriority")
     private Integer bandwidthPriority;
     @JsonProperty("comment")
@@ -92,11 +89,11 @@ public class Torrent {
     @JsonProperty("creator")
     private String creator;
     @JsonProperty("dateCreated")
-    private Integer dateCreated;
+    private Date dateCreated;
     @JsonProperty("desiredAvailable")
     private Integer desiredAvailable;
     @JsonProperty("doneDate")
-    private Integer doneDate;
+    private Date doneDate;
     @JsonProperty("downloadDir")
     private String downloadDir;
     @JsonProperty("downloadLimit")
@@ -184,7 +181,9 @@ public class Torrent {
     @JsonProperty("seedRatioLimit")
     private Integer seedRatioLimit;
     @JsonProperty("status")
-    private Integer status;
+    private TorrentStatus status;
+    @JsonProperty("startDate")
+    private Date startDate;
     @JsonProperty("torrentFile")
     private String torrentFile;
     @JsonProperty("totalSize")
@@ -209,23 +208,23 @@ public class Torrent {
     private Integer webseedsSendingToUs;
     
     @JsonProperty("activityDate")
-    public Integer getActivityDate() {
+    public Date getActivityDate() {
         return activityDate;
     }
 
     @JsonProperty("activityDate")
-    public void setActivityDate(Integer activityDate) {
-        this.activityDate = activityDate;
+    public void setActivityDate(Long activityDate) {
+        this.activityDate = new Date(activityDate*1000);
     }
 
     @JsonProperty("addedDate")
-    public Integer getAddedDate() {
+    public Date getAddedDate() {
         return addedDate;
     }
 
     @JsonProperty("addedDate")
-    public void setAddedDate(Integer addedDate) {
-        this.addedDate = addedDate;
+    public void setAddedDate(Long addedDate) {
+        this.addedDate = new Date(addedDate*1000);
     }
 
     @JsonProperty("bandwidthPriority")
@@ -269,13 +268,13 @@ public class Torrent {
     }
 
     @JsonProperty("dateCreated")
-    public Integer getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
     @JsonProperty("dateCreated")
-    public void setDateCreated(Integer dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDateCreated(Long dateCreated) {
+        this.dateCreated = new Date(dateCreated*1000);
     }
 
     @JsonProperty("desiredAvailable")
@@ -289,13 +288,13 @@ public class Torrent {
     }
 
     @JsonProperty("doneDate")
-    public Integer getDoneDate() {
+    public Date getDoneDate() {
         return doneDate;
     }
 
     @JsonProperty("doneDate")
-    public void setDoneDate(Integer doneDate) {
-        this.doneDate = doneDate;
+    public void setDoneDate(Long doneDate) {
+        this.doneDate = new Date(doneDate*1000);
     }
 
     @JsonProperty("downloadDir")
@@ -729,16 +728,26 @@ public class Torrent {
     }
 
     @JsonProperty("status")
-    public Integer getStatus() {
-        return status;
+    public String getStatus() {
+        return status.toString();
     }
 
     @JsonProperty("status")
     public void setStatus(Integer status) {
-        this.status = status;
+        this.status = TorrentStatus.fromId(status.intValue());
     }
     
-    @JsonProperty("torrentFile")
+    @JsonProperty("startDate")
+    public Date getStartDate() {
+		return startDate;
+	}
+
+    @JsonProperty("startDate")
+	public void setStartDate(Long startDate) {
+		this.startDate = new Date(startDate*1000);
+	}
+
+	@JsonProperty("torrentFile")
     public String getTorrentFile() {
         return torrentFile;
     }

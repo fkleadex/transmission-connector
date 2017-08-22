@@ -1,6 +1,7 @@
 package com.df.transmission.data;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -23,8 +24,22 @@ public class Arguments implements Serializable{
 	public List<Integer> getIds() {
 		return ids;
 	}
-	public void setIds(List<Integer> ids) {
-		this.ids = ids;
+	public void setIds(String ids) {
+		if (ids!=null) {
+			String[] items=ids.split(",");
+			Integer[] results = new Integer[items.length];
+			for (int i = 0; i < items.length; i++) {
+			    try {
+			        results[i] = Integer.parseInt(items[i]);
+			    } catch (NumberFormatException nfe) {
+			       nfe.printStackTrace();
+			    };
+			}
+			this.ids = Arrays.asList(results);
+		}
+		else {
+			this.ids=null;
+		}
 	}
 	
 }

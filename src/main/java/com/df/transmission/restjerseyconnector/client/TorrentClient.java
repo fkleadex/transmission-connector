@@ -64,7 +64,8 @@ public class TorrentClient {
 	        Request request=new Request();
 			request.setMethod("torrent-get");
 			Arguments arguments=new Arguments();
-			arguments.setFields(fields);			
+			arguments.setFields(fields);		
+			arguments.setIds(ids);
 			request.setArguments(arguments);
 	        return execute(webResource, "POST", ResponseGetTorrents.class,request);
 	    }
@@ -74,6 +75,16 @@ public class TorrentClient {
 	        Request request=new Request();
 			request.setMethod("session-get");
 	        return execute(webResource, "POST", ResponseGetSession.class,request);
+	    }
+	    
+	    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+	    	WebResource webResource = getApiResource();
+	        Request request=new Request();
+			request.setMethod("torrent-stop");
+			Arguments arguments=new Arguments();
+			arguments.setIds(ids);
+			request.setArguments(arguments);
+	        return execute(webResource, "POST", String.class,request);
 	    }
 	    
 	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException{

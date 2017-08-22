@@ -13,6 +13,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 @JsonSerialize(using = FieldsSerializer.class)
 public class Fields {
+	
 	private Boolean activityDate;
 	private Boolean addedDate;
 	private Boolean bandwidthPriority;
@@ -70,7 +71,7 @@ public class Fields {
 	private Boolean seedRatioMode;
 	private Boolean sizeWhenDone;
 	private Boolean startDate;
-	private Boolean status;
+	private Boolean status;	
 	private Boolean trackers;
 	private Boolean trackerStats;
 	private Boolean totalSize;
@@ -423,7 +424,7 @@ public class Fields {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
-	}
+	}	
 	public Boolean getTrackers() {
 		return trackers;
 	}
