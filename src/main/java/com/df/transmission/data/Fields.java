@@ -3,7 +3,6 @@ package com.df.transmission.data;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class Fields {
 	private Boolean etaIdle;
 	private Boolean files;
 	private Boolean fileStats;
-	private Boolean hash;
+	private Boolean hashString;
 	private Boolean haveUnchecked;
 	private Boolean haveValid;
 	private Boolean honorsSessionLimits;
@@ -197,11 +196,11 @@ public class Fields {
 	public void setFileStats(Boolean fileStats) {
 		this.fileStats = fileStats;
 	}
-	public Boolean getHash() {
-		return hash;
+	public Boolean getHashString() {
+		return hashString;
 	}
-	public void setHash(Boolean hash) {
-		this.hash = hash;
+	public void setHashString(Boolean hashString) {
+		this.hashString = hashString;
 	}
 	public Boolean getHaveUnchecked() {
 		return haveUnchecked;

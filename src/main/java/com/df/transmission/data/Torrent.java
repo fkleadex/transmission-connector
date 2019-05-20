@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "etaIdle",
     "fileStats",
     "files",
+    "hashString",
     "haveUnchecked",
     "haveValid",
     "honorsSessionLimits",
@@ -114,6 +115,8 @@ public class Torrent {
     private List<FileStat> fileStats = null;
     @JsonProperty("files")
     private List<File> files = null;
+    @JsonProperty("hashString")
+    private String hashString;
     @JsonProperty("haveUnchecked")
     private Integer haveUnchecked;
     @JsonProperty("haveValid")
@@ -397,7 +400,17 @@ public class Torrent {
         this.files = files;
     }
 
-    @JsonProperty("haveUnchecked")
+    @JsonProperty("hashString")
+    public String getHashString() {
+		return hashString;
+	}
+
+    @JsonProperty("hashString")
+	public void setHashString(String hashString) {
+		this.hashString = hashString;
+	}
+
+	@JsonProperty("haveUnchecked")
     public Integer getHaveUnchecked() {
         return haveUnchecked;
     }

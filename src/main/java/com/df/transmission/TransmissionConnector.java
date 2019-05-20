@@ -31,23 +31,30 @@ public class TransmissionConnector {
      * @throws UniformInterfaceException 
      * @throws ClientHandlerException 
      * @throws DefaultMuleException 
+     * @throws TorrentException 
      */
     @Processor
     @ReconnectOn(exceptions = {TorrentException.class})
-    public ResponseGetSession getSession() throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+    public ResponseGetSession getSession() throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
         return config.getClient().getSession();
     }
 
     @Processor
     @ReconnectOn(exceptions = {TorrentException.class})
-    public ResponseGetTorrents getTorrents(Fields arguments,@Optional String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+    public ResponseGetTorrents getTorrents(Fields arguments,@Optional String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
         return config.getClient().getTorrents(arguments,ids);
     }
     
     @Processor
     @ReconnectOn(exceptions = {TorrentException.class})
-    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
         return config.getClient().stopTorrents(ids);
+    }
+    
+    @Processor
+    @ReconnectOn(exceptions = {TorrentException.class})
+    public ResponseGetTorrents removeTorrent(String ids, Boolean deleteData) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+        return config.getClient().removeTorrents(ids, deleteData);
     }
     
     public ConnectorConfig getConfig() {

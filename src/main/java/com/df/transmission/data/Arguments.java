@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 
@@ -14,6 +15,8 @@ public class Arguments implements Serializable{
 	
 	private Fields fields;
 	private List<Integer> ids;
+	@JsonProperty("delete-local-data")
+	private Boolean deleteLocalData;
 	
 	public Fields getFields() {
 		return fields;
@@ -40,6 +43,13 @@ public class Arguments implements Serializable{
 		else {
 			this.ids=null;
 		}
+	}
+	public Boolean getDeleteLocalData() {
+		return deleteLocalData;
+	}
+	
+	public void setDeleteLocalData(Boolean deleteLocalData) {
+		this.deleteLocalData = deleteLocalData;
 	}
 	
 }

@@ -59,7 +59,7 @@ public class TorrentClient {
 	  	  }
 	  }
 	  
-	    public ResponseGetTorrents getTorrents(Fields fields,String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+	    public ResponseGetTorrents getTorrents(Fields fields,String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
 	        WebResource webResource = getApiResource();
 	        Request request=new Request();
 			request.setMethod("torrent-get");
@@ -70,14 +70,14 @@ public class TorrentClient {
 	        return execute(webResource, "POST", ResponseGetTorrents.class,request);
 	    }
 	    
-	    public ResponseGetSession getSession() throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+	    public ResponseGetSession getSession() throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
 	        WebResource webResource = getApiResource();
 	        Request request=new Request();
 			request.setMethod("session-get");
 	        return execute(webResource, "POST", ResponseGetSession.class,request);
 	    }
 	    
-	    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException {
+	    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
 	    	WebResource webResource = getApiResource();
 	        Request request=new Request();
 			request.setMethod("torrent-stop");
@@ -86,8 +86,18 @@ public class TorrentClient {
 			request.setArguments(arguments);
 	        return execute(webResource, "POST", String.class,request);
 	    }
+	    public ResponseGetTorrents removeTorrents(String ids, Boolean deleteData) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+	    	WebResource webResource = getApiResource();
+	        Request request=new Request();
+			request.setMethod("torrent-remove");
+			Arguments arguments=new Arguments();
+			arguments.setIds(ids);
+			arguments.setDeleteLocalData(deleteData);
+			request.setArguments(arguments);
+	        return execute(webResource, "POST", ResponseGetTorrents.class,request);
+	    }
 	    
-	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException{
+	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException{
 	        return execute(webResource, method, returnClass,null);
 	    }
 	    /**
@@ -95,9 +105,10 @@ public class TorrentClient {
 	     * @throws UniformInterfaceException 
 	     * @throws ClientHandlerException 
 	     * @throws DefaultMuleException 
+	     * @throws TorrentException 
 	     *
 	     */
-	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass,Object requestEntity) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException{
+	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass,Object requestEntity) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException{
 	    	Builder request = webResource.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON).header("X-Transmission-Session-Id", getConfig().getApiSession());
 	    	ClientResponse clientResponse = request.method(method, ClientResponse.class,requestEntity);
 	        if(clientResponse.getStatus() == 200) {
@@ -106,6 +117,8 @@ public class TorrentClient {
 	            throw new org.mule.api.DefaultMuleException("The access token has expired; " + clientResponse.getEntity(String.class));
 	        } else if (clientResponse.getStatus() == 404){
 	        	return null;
+	        } else if (clientResponse.getStatus() == 409) {
+	        	throw new TorrentException();
 	        } else {
 	            throw new org.mule.api.DefaultMuleException(
 	              String.format("ERROR - statusCode: %d - message: %s",
