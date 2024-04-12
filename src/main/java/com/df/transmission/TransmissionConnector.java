@@ -47,7 +47,7 @@ public class TransmissionConnector {
     
     @Processor
     @ReconnectOn(exceptions = {TorrentException.class})
-    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+    public ResponseGetTorrents stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
         return config.getClient().stopTorrents(ids);
     }
     
@@ -55,6 +55,18 @@ public class TransmissionConnector {
     @ReconnectOn(exceptions = {TorrentException.class})
     public ResponseGetTorrents removeTorrent(String ids, Boolean deleteData) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
         return config.getClient().removeTorrents(ids, deleteData);
+    }
+    
+    @Processor
+    @ReconnectOn(exceptions = {TorrentException.class})
+    public ResponseGetTorrents startTorrent(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+        return config.getClient().startTorrents(ids);
+    }
+    
+    @Processor
+    @ReconnectOn(exceptions = {TorrentException.class})
+    public ResponseGetTorrents startNowTorrent(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+        return config.getClient().startNowTorrents(ids);
     }
     
     public ConnectorConfig getConfig() {

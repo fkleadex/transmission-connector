@@ -73,7 +73,7 @@ public class TrackerStat {
     @JsonProperty("lastScrapeTime")
     private Long lastScrapeTime;
     @JsonProperty("lastScrapeTimedOut")
-    private Integer lastScrapeTimedOut;
+    private Boolean lastScrapeTimedOut;
     @JsonProperty("leecherCount")
     private Integer leecherCount;
     @JsonProperty("nextAnnounceTime")
@@ -270,12 +270,12 @@ public class TrackerStat {
     }
 
     @JsonProperty("lastScrapeTimedOut")
-    public Integer getLastScrapeTimedOut() {
+    public Boolean getLastScrapeTimedOut() {
         return lastScrapeTimedOut;
     }
 
     @JsonProperty("lastScrapeTimedOut")
-    public void setLastScrapeTimedOut(Integer lastScrapeTimedOut) {
+    public void setLastScrapeTimedOut(Boolean lastScrapeTimedOut) {
         this.lastScrapeTimedOut = lastScrapeTimedOut;
     }
 

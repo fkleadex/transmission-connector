@@ -21,6 +21,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 
@@ -45,6 +46,7 @@ public class TorrentClient {
 	  public void login(String username,String password) throws DefaultMuleException, TorrentException{
 		  Request request=new Request();
 		  request.setMethod("session-get");
+		  getApiResource().addFilter(new HTTPBasicAuthFilter(username, password));
 		  ClientResponse clientResponse = getApiResource().accept("*/*").type(MediaType.APPLICATION_JSON).post(ClientResponse.class, request);
 		  if (clientResponse.getStatus() == 200 || clientResponse.getStatus() == 302) {
 			  log.debug("Login is correct");
@@ -77,15 +79,16 @@ public class TorrentClient {
 	        return execute(webResource, "POST", ResponseGetSession.class,request);
 	    }
 	    
-	    public String stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+	    public ResponseGetTorrents actionRequest(String method, String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
 	    	WebResource webResource = getApiResource();
 	        Request request=new Request();
-			request.setMethod("torrent-stop");
+			request.setMethod(method);
 			Arguments arguments=new Arguments();
 			arguments.setIds(ids);
 			request.setArguments(arguments);
-	        return execute(webResource, "POST", String.class,request);
+	        return execute(webResource, "POST", ResponseGetTorrents.class,request);
 	    }
+	    
 	    public ResponseGetTorrents removeTorrents(String ids, Boolean deleteData) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
 	    	WebResource webResource = getApiResource();
 	        Request request=new Request();
@@ -97,9 +100,18 @@ public class TorrentClient {
 	        return execute(webResource, "POST", ResponseGetTorrents.class,request);
 	    }
 	    
-	    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException{
-	        return execute(webResource, method, returnClass,null);
+	    public ResponseGetTorrents stopTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+	        return actionRequest("torrent-stop", ids);
 	    }
+	    
+	    public ResponseGetTorrents startTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+			return actionRequest("torrent-stop", ids);
+	    }
+	    
+	    public ResponseGetTorrents startNowTorrents(String ids) throws DefaultMuleException, ClientHandlerException, UniformInterfaceException, TorrentException {
+			return actionRequest("torrent-start-now", ids);
+	    }
+	    
 	    /**
 	     * Executes the request
 	     * @throws UniformInterfaceException 
